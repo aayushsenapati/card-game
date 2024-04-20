@@ -1,4 +1,4 @@
-package BlackJackGame.src;
+
 public class Card {
     String value;
     String type;
@@ -27,6 +27,6 @@ public class Card {
     }
 
     public String getImagePath() {
-        return "/Users/achintyakrishna/blackjack-java/BlackJackGame/cards/" + toString() + ".png";
+        return "./cards/" + toString() + ".png";
     }
 }
