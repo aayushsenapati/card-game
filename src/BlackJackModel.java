@@ -94,9 +94,18 @@ public class BlackJackModel {
         playerSum += card.getValue();
         playerAceCount += card.isAce() ? 1 : 0;
         playerHand.add(card);
+    
+        if (playerSum > 21) {
+            gameInProgress = false;
+            determineGameResult();
+        }
     }
-
+    
     public void stay() {
+        dealerHand.add(hiddenCard);
+        dealerSum += hiddenCard.getValue();
+        dealerAceCount += hiddenCard.isAce() ? 1 : 0;
+    
         while (dealerSum < 17) {
             Card card = deck.remove(deck.size() - 1);
             dealerSum += card.getValue();
