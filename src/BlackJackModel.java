@@ -1,24 +1,17 @@
-
 import java.util.ArrayList;
 import java.util.Random;
 
 public class BlackJackModel {
     private ArrayList<Card> deck;
-    private Random random = new Random();
-
-    // Dealer
-    private Card hiddenCard;
     private ArrayList<Card> dealerHand;
+    private ArrayList<Card> playerHand;
+    private Card hiddenCard;
     private int dealerSum;
     private int dealerAceCount;
-
-    // Player
-    private ArrayList<Card> playerHand;
     private int playerSum;
     private int playerAceCount;
-
-    private boolean gameInProgress = true;
-    private String gameResult = "";
+    private Random random = new Random();
+    private boolean gameInProgress = false;
 
     public BlackJackModel() {
         buildDeck();
@@ -26,7 +19,7 @@ public class BlackJackModel {
         startGame();
     }
 
-    private void buildDeck() {
+    public void buildDeck() {
         deck = new ArrayList<>();
         String[] values = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
         String[] types = {"C", "D", "H", "S"};
@@ -38,7 +31,7 @@ public class BlackJackModel {
         }
     }
 
-    private void shuffleDeck() {
+    public void shuffleDeck() {
         for (int i = 0; i < deck.size(); i++) {
             int j = random.nextInt(deck.size());
             Card temp = deck.get(i);
@@ -47,7 +40,7 @@ public class BlackJackModel {
         }
     }
 
-    private void startGame() {
+    public void startGame() {
         dealerHand = new ArrayList<>();
         dealerSum = 0;
         dealerAceCount = 0;
@@ -71,22 +64,8 @@ public class BlackJackModel {
             playerAceCount += card.isAce() ? 1 : 0;
             playerHand.add(card);
         }
-    }
 
-    public ArrayList<Card> getPlayerHand() {
-        return playerHand;
-    }
-
-    public ArrayList<Card> getDealerHand() {
-        return dealerHand;
-    }
-
-    public int getPlayerSum() {
-        return playerSum;
-    }
-
-    public int getDealerSum() {
-        return dealerSum;
+        gameInProgress = true;
     }
 
     public void hit() {
@@ -94,6 +73,10 @@ public class BlackJackModel {
         playerSum += card.getValue();
         playerAceCount += card.isAce() ? 1 : 0;
         playerHand.add(card);
+
+        if (playerSum > 21) {
+            gameInProgress = false;
+        }
     }
 
     public void stay() {
@@ -102,30 +85,59 @@ public class BlackJackModel {
             dealerSum += card.getValue();
             dealerAceCount += card.isAce() ? 1 : 0;
             dealerHand.add(card);
+
+            if (dealerSum > 21) {
+                gameInProgress = false;
+                break;
+            }
         }
-        gameInProgress = false;
-        determineGameResult();
+        gameInProgress = false; // End the game after the dealer's turn
+    }
+
+    public int reducePlayerAce() {
+        while (playerSum > 21 && playerAceCount > 0) {
+            playerSum -= 10;
+            playerAceCount -= 1;
+        }
+        return playerSum;
+    }
+
+    public int reduceDealerAce() {
+        while (dealerSum > 21 && dealerAceCount > 0) {
+            dealerSum -= 10;
+            dealerAceCount -= 1;
+        }
+        return dealerSum;
+    }
+
+    public ArrayList<Card> getDealerHand() {
+        return dealerHand;
+    }
+
+    public ArrayList<Card> getPlayerHand() {
+        return playerHand;
+    }
+
+    public Card getHiddenCard() {
+        return hiddenCard;
+    }
+
+    public int getDealerSum() {
+        return dealerSum;
+    }
+
+    public int getPlayerSum() {
+        return playerSum;
     }
 
     public boolean isGameInProgress() {
         return gameInProgress;
     }
 
-    public String getGameResult() {
-        return gameResult;
-    }
-
-    private void determineGameResult() {
-        if (playerSum > 21) {
-            gameResult = "You Lose!";
-        } else if (dealerSum > 21) {
-            gameResult = "You Win!";
-        } else if (playerSum == dealerSum) {
-            gameResult = "Tie!";
-        } else if (playerSum > dealerSum) {
-            gameResult = "You Win!";
-        } else if (playerSum < dealerSum) {
-            gameResult = "You Lose!";
-        }
+    public void restartGame() {
+        deck = new ArrayList<>();
+        buildDeck();
+        shuffleDeck();
+        startGame();
     }
 }

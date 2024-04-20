@@ -1,7 +1,6 @@
-
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.*;
 
 public class BlackJackController {
     private BlackJackModel model;
@@ -14,10 +13,15 @@ public class BlackJackController {
     }
 
     private void setupUI() {
-        JButton hitButton = new JButton("Hit");
-        JButton stayButton = new JButton("Stay");
+        JFrame frame = new JFrame("Black Jack");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.add(view);
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
 
-        hitButton.addActionListener(new ActionListener() {
+        // Add action listeners for buttons
+        view.getHitButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 model.hit();
@@ -25,7 +29,7 @@ public class BlackJackController {
             }
         });
 
-        stayButton.addActionListener(new ActionListener() {
+        view.getStayButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 model.stay();
@@ -33,8 +37,13 @@ public class BlackJackController {
             }
         });
 
-        // Add buttons to the view
-        view.add(hitButton);
-        view.add(stayButton);
+        // Add action listener for restart button
+        view.getRestartButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                model.restartGame(); // Reset the game
+                view.repaint();
+            }
+        });
     }
 }

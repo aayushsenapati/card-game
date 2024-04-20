@@ -1,0 +1,32 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Add your dependencies here, for example:
+    // implementation 'com.google.guava:guava:30.1-jre'
+}
+
+sourceCompatibility = '11'
+targetCompatibility = '11'
+
+application {
+    mainClassName = 'BlackJackGame'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src']
+        }
+    }
+}
+
+run {
+    standardInput = System.in
+}
