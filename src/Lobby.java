@@ -71,11 +71,6 @@ public class Lobby extends JFrame implements GameObserver {
         BlackJackController controller = factory.getController(view, model);
         model.addObserver(this);
 
-        JFrame frame = new JFrame("BlackJack");
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
     }
 
     private void startMinesweeper() {

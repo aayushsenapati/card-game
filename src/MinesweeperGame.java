@@ -6,6 +6,8 @@ import javax.swing.*;
 
 public class MinesweeperGame {
 
+    private JButton resetButton; 
+    private JButton exitButton;
     private ArrayList<GameObserver> observers = new ArrayList<>();
     public void addObserver(GameObserver observer) {
         observers.add(observer);
@@ -43,6 +45,7 @@ public class MinesweeperGame {
     private JLabel textLabel;
     private JPanel textPanel;
     private JPanel boardPanel;
+    private JPanel controlPanel; // New panel for reset and exit buttons
     private MineTile[][] board;
     private ArrayList<MineTile> mineList;
     private Random random;
@@ -94,13 +97,13 @@ public class MinesweeperGame {
         this.textLabel = new JLabel();
         this.textPanel = new JPanel();
         this.boardPanel = new JPanel();
+        this.controlPanel = new JPanel(); // Initialize control panel
         this.board = new MineTile[numRows][numCols];
 
         this.mineList = new ArrayList<>();
         this.random = new Random();
         this.tilesClicked = 0;
         this.gameOver = false;
-
         initializeGUI(builder.title,builder.fontSize);
         setMines();
     }
@@ -122,7 +125,35 @@ public class MinesweeperGame {
         frame.add(textPanel, BorderLayout.NORTH);
 
         boardPanel.setLayout(new GridLayout(numRows, numCols));
-        frame.add(boardPanel);
+        frame.add(boardPanel, BorderLayout.CENTER);
+
+        // Initialize control panel for reset and exit buttons
+        controlPanel.setLayout(new FlowLayout());
+        resetButton = new JButton("Reset");
+        resetButton.setFocusable(false);
+        resetButton.setMargin(new Insets(0, 0, 0, 0));
+        resetButton.setFont(new Font("Arial Unicode MS", Font.PLAIN, 45));
+        resetButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (e.getButton() == MouseEvent.BUTTON1) {
+                    resetGame(); // Reset the game
+                }
+            }
+        });
+        controlPanel.add(resetButton);
+
+        exitButton = new JButton("Exit"); // Initialize exit button
+        exitButton.setFont(new Font("Arial Unicode MS", Font.PLAIN, 45)); // Set the same font size as the reset button
+        exitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose(); // Close the game window
+            }
+        });
+        controlPanel.add(exitButton);
+
+        frame.add(controlPanel, BorderLayout.SOUTH); // Add control panel to the frame
 
         for (int r = 0; r < numRows; r++) {
             for (int c = 0; c < numCols; c++) {
@@ -163,6 +194,26 @@ public class MinesweeperGame {
         frame.setVisible(true);
     }
 
+    private void resetGame() {
+        // Reset game state
+        gameOver = false;
+        tilesClicked = 0;
+        mineList.clear(); // Clear the list of mines
+        setMines(); // Re-set the mines
+    
+        // Reset board UI
+        for (int r = 0; r < numRows; r++) {
+            for (int c = 0; c < numCols; c++) {
+                MineTile tile = board[r][c];
+                tile.setEnabled(true); // Enable all tiles
+                tile.setText(""); // Clear all tile texts
+            }
+        }
+    
+        // Update UI to reflect new game state
+        textLabel.setText("Minesweeper: " + mineCount);
+        frame.setVisible(true); // Ensure the frame is visible
+    }
     private void setMines() {
         int mineLeft = mineCount;
         while (mineLeft > 0) {
@@ -237,4 +288,10 @@ public class MinesweeperGame {
         return 0;
     }
 
+    public static void main(String[] args) {
+        new MinesweeperGame.Builder(70, 8, 10)
+                .title("Minesweeper")
+                .fontSize(30)
+                .build();
+    }
 }

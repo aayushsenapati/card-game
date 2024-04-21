@@ -45,5 +45,12 @@ public class BlackJackController {
                 view.repaint();
             }
         });
+
+        view.getExitButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose(); // Close the game window
+            }
+        });
     }
 }

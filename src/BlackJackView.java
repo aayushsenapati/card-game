@@ -5,11 +5,13 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
+
 public class BlackJackView extends JPanel {
     private BlackJackModel model;
     private JButton hitButton;
     private JButton stayButton;
     private JButton restartButton;
+    private JButton exitButton;
 
     public BlackJackView(BlackJackModel model) {
         this.model = model;
@@ -20,10 +22,12 @@ public class BlackJackView extends JPanel {
         hitButton = new JButton("Hit");
         stayButton = new JButton("Stay");
         restartButton = new JButton("Restart");
+        exitButton = new JButton("Exit");
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(hitButton);
         buttonPanel.add(stayButton);
         buttonPanel.add(restartButton);
+        buttonPanel.add(exitButton); 
         add(buttonPanel, BorderLayout.SOUTH);
     }
 
@@ -37,6 +41,9 @@ public class BlackJackView extends JPanel {
 
     public JButton getRestartButton() {
         return restartButton;
+    }
+    public JButton getExitButton() {
+        return exitButton;
     }
 
 
