@@ -75,10 +75,14 @@ public class Lobby extends JFrame implements GameObserver {
 
     private void startMinesweeper() {
         // Start Minesweeper game
-        MinesweeperGame game = new MinesweeperGame.Builder(70, 8, 10)
+        MinesweeperGame game = new MinesweeperGame.Builder()
+                                    .numRows(10)
+                                    .mines(10)
+                                    .tileSize(50)
                                     .title("Minesweeper")
                                     .fontSize(30)
                                     .build();
+                                
                                     game.addObserver(this);
     }
     

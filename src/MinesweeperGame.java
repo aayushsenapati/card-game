@@ -54,21 +54,34 @@ public class MinesweeperGame {
 
     public static class Builder {
         // Required parameters
-        private int tileSize;
-        private int numRows;
-        private int numCols;
-        private int mineCount;
+        private int tileSize = 70;
+        private int numRows = 8;
+        private int numCols = 8;
+        private int mineCount = 10;
 
         // Optional parameters - initialized to default values
         private String title = "Minesweeper";
         private int fontSize = 25;
 
-        public Builder(int tileSize, int numRows, int mineCount) {
+        public Builder() {
+        }
+
+        public Builder tileSize(int tileSize) {
             this.tileSize = tileSize;
+            return this;
+        }
+
+        public Builder numRows(int numRows) {
             this.numRows = numRows;
             this.numCols = numRows;
-            this.mineCount = mineCount;
+            return this;
         }
+
+        public Builder mines(int mines) {
+            this.mineCount = mines;
+            return this;
+        }
+
 
         public Builder title(String title) {
             this.title = title;
@@ -288,10 +301,4 @@ public class MinesweeperGame {
         return 0;
     }
 
-    public static void main(String[] args) {
-        new MinesweeperGame.Builder(70, 8, 10)
-                .title("Minesweeper")
-                .fontSize(30)
-                .build();
-    }
 }
