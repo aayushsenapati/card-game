@@ -81,6 +81,7 @@ public class Lobby extends JFrame implements GameObserver {
                                     .build();
                                     game.addObserver(this);
     }
+    
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
