@@ -254,7 +254,7 @@ public class MinesweeperGame {
             return;
         }
         MineTile tile = board[r][c];
-        if (!tile.isEnabled()) {
+        if (!tile.isEnabled() ) {
             return;
         }
         tile.setEnabled(false);
@@ -284,7 +284,7 @@ public class MinesweeperGame {
             checkMine(r + 1, c + 1);
         }
 
-        if (tilesClicked == numRows * numCols - mineList.size()) {
+        if (tilesClicked == numRows * numCols - mineList.size() && !gameOver) {
             notifyWin();
             gameOver = true;
             textLabel.setText("Mines Cleared!");
