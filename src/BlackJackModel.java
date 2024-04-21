@@ -2,7 +2,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class BlackJackModel {
-    private ArrayList<Card> deck;
     private ArrayList<Card> dealerHand;
     private ArrayList<Card> playerHand;
     private Card hiddenCard;
@@ -32,42 +31,24 @@ public class BlackJackModel {
     }
     
     public BlackJackModel() {
-        buildDeck();
-        shuffleDeck();
+        Deck.reset();
         startGame();
     }
 
-    public void buildDeck() {
-        deck = new ArrayList<>();
-        String[] values = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
-        String[] types = {"C", "D", "H", "S"};
-
-        for (String type : types) {
-            for (String value : values) {
-                deck.add(new Card(value, type));
-            }
-        }
-    }
-
-    public void shuffleDeck() {
-        for (int i = 0; i < deck.size(); i++) {
-            int j = random.nextInt(deck.size());
-            Card temp = deck.get(i);
-            deck.set(i, deck.get(j));
-            deck.set(j, temp);
-        }
-    }
 
     public void startGame() {
         dealerHand = new ArrayList<>();
         dealerSum = 0;
+        Deck dealerDeck = Deck.getInstance();
+        dealerDeck.shuffle();
         dealerAceCount = 0;
 
-        hiddenCard = deck.remove(deck.size() - 1);
+        
+        hiddenCard = dealerDeck.draw();
         dealerSum += hiddenCard.getValue();
         dealerAceCount += hiddenCard.isAce() ? 1 : 0;
 
-        Card card = deck.remove(deck.size() - 1);
+        Card card = dealerDeck.draw();
         dealerSum += card.getValue();
         dealerAceCount += card.isAce() ? 1 : 0;
         dealerHand.add(card);
@@ -75,9 +56,10 @@ public class BlackJackModel {
         playerHand = new ArrayList<>();
         playerSum = 0;
         playerAceCount = 0;
+        Deck playerDeck = Deck.getInstance();
 
         for (int i = 0; i < 2; i++) {
-            card = deck.remove(deck.size() - 1);
+            card = playerDeck.draw();
             playerSum += card.getValue();
             playerAceCount += card.isAce() ? 1 : 0;
             playerHand.add(card);
@@ -87,7 +69,8 @@ public class BlackJackModel {
     }
 
     public void hit() {
-        Card card = deck.remove(deck.size() - 1);
+        Deck playerDeck = Deck.getInstance();
+        Card card = playerDeck.draw();
         playerSum += card.getValue();
         playerAceCount += card.isAce() ? 1 : 0;
         playerHand.add(card);
@@ -103,10 +86,11 @@ public class BlackJackModel {
     }
 
     public void stay() {
+        Deck dealerDeck = Deck.getInstance();
         while (dealerSum < 17) {
 
             // Add a card to the dealer's hand
-            Card card = deck.remove(deck.size() - 1);
+            Card card = dealerDeck.draw();
             dealerSum += card.getValue();
             dealerAceCount += card.isAce() ? 1 : 0;
             dealerHand.add(card);
@@ -167,9 +151,8 @@ public class BlackJackModel {
     }
 
     public void restartGame() {
-        deck = new ArrayList<>();
-        buildDeck();
-        shuffleDeck();
+        Deck.reset();
+        Deck.getInstance().shuffle();
         startGame();
     }
 }
