@@ -5,6 +5,23 @@ import java.util.Random;
 import javax.swing.*;
 
 public class MinesweeperGame {
+
+    private ArrayList<GameObserver> observers = new ArrayList<>();
+    public void addObserver(GameObserver observer) {
+        observers.add(observer);
+    }
+    
+    private void notifyWin() {
+        for (GameObserver observer : observers) {
+            observer.updateWinCount();
+        }
+    }
+    
+    private void notifyLoss() {
+        for (GameObserver observer : observers) {
+            observer.updateLossCount();
+        }
+    }
     private class MineTile extends JButton {
         int r;
         int c;
@@ -164,6 +181,7 @@ public class MinesweeperGame {
             tile.setText("!");
         }
         gameOver = true;
+        notifyLoss();
         textLabel.setText("Game Over!");
     }
 
@@ -203,6 +221,7 @@ public class MinesweeperGame {
         }
 
         if (tilesClicked == numRows * numCols - mineList.size()) {
+            notifyWin();
             gameOver = true;
             textLabel.setText("Mines Cleared!");
         }

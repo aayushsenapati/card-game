@@ -12,7 +12,25 @@ public class BlackJackModel {
     private int playerAceCount;
     private Random random = new Random();
     private boolean gameInProgress = false;
+    private ArrayList<GameObserver> observers = new ArrayList<>();
 
+
+    public void addObserver(GameObserver observer) {
+        observers.add(observer);
+    }
+    
+    private void notifyWin() {
+        for (GameObserver observer : observers) {
+            observer.updateWinCount();
+        }
+    }
+    
+    private void notifyLoss() {
+        for (GameObserver observer : observers) {
+            observer.updateLossCount();
+        }
+    }
+    
     public BlackJackModel() {
         buildDeck();
         shuffleDeck();
@@ -73,9 +91,14 @@ public class BlackJackModel {
         playerSum += card.getValue();
         playerAceCount += card.isAce() ? 1 : 0;
         playerHand.add(card);
-
+        
+        while(playerSum > 21 && playerAceCount > 0) {
+            playerSum -= 10;
+            playerAceCount--;
+        }
         if (playerSum > 21) {
             gameInProgress = false;
+            notifyLoss();
         }
     }
 
@@ -87,6 +110,17 @@ public class BlackJackModel {
             dealerHand.add(card);
 
             if (dealerSum > 21) {
+                notifyWin();
+                gameInProgress = false;
+                break;
+            }
+            if(playerSum < 21 && dealerSum > playerSum) {
+                notifyLoss();
+                gameInProgress = false;
+                break;
+            }
+            else if(playerSum < 21 && dealerSum < playerSum) {
+                notifyWin();
                 gameInProgress = false;
                 break;
             }

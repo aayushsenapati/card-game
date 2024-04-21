@@ -4,7 +4,13 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Lobby extends JFrame {
+public class Lobby extends JFrame implements GameObserver {
+
+    private int winCount = 0;
+    private int lossCount = 0;
+    private JLabel winLabel;
+    private JLabel lossLabel;
+
     public Lobby() {
         setTitle("Game Lobby");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -16,6 +22,12 @@ public class Lobby extends JFrame {
         JButton blackjackButton = new JButton("Play Blackjack");
         JButton minesweeperButton = new JButton("Play Minesweeper");
 
+        winLabel = new JLabel("Wins: " + winCount);
+        lossLabel = new JLabel("Losses: " + lossCount);
+
+        // Add labels to the panel
+        panel.add(winLabel);
+        panel.add(lossLabel);
         blackjackButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -37,16 +49,27 @@ public class Lobby extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
     }
+    @Override
+    public void updateWinCount() {
+        winCount++;
+        winLabel.setText("Wins: " + winCount);
+    }
+
+    @Override
+    public void updateLossCount() {
+        lossCount++;
+        lossLabel.setText("Losses: " + lossCount);
+    }
 
     private void startBlackjack() {
         // Start Blackjack game
         BlackJackModel model = new BlackJackModel();
         BlackJackView view = new BlackJackView(model);
         BlackJackController controller = new BlackJackController(model, view);
+        model.addObserver(this);
 
         JFrame frame = new JFrame("BlackJack");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.add(view);
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
@@ -58,6 +81,7 @@ public class Lobby extends JFrame {
                                     .title("Minesweeper")
                                     .fontSize(30)
                                     .build();
+                                    game.addObserver(this);
     }
 
     public static void main(String[] args) {

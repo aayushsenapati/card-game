@@ -39,6 +39,7 @@ public class BlackJackView extends JPanel {
         return restartButton;
     }
 
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -49,7 +50,8 @@ public class BlackJackView extends JPanel {
                 BufferedImage cardImg = ImageIO.read(new File(card.getImagePath()));
                 g.drawImage(cardImg, 110 + 25 + (110 + 5) * i, 20, 110, 154, null);
             }
-    
+
+            
             // Draw hidden card
             if (!model.isGameInProgress()) {
                 Card hiddenCard = model.getHiddenCard();
@@ -59,18 +61,28 @@ public class BlackJackView extends JPanel {
                 BufferedImage hiddenCardImg = ImageIO.read(new File("./cards/BACK.png"));
                 g.drawImage(hiddenCardImg, 20, 20, 110, 154, null);
             }
-    
+            
             // Draw player's hand
             for (int i = 0; i < model.getPlayerHand().size(); i++) {
                 Card card = model.getPlayerHand().get(i);
                 BufferedImage cardImg = ImageIO.read(new File(card.getImagePath()));
                 g.drawImage(cardImg, 20 + (110 + 5) * i, 320, 110, 154, null);
             }
-    
+            //Show dealer hand
+            
+
+            //show player hand
+            g.setFont(new Font("Arial", Font.PLAIN, 24));
+            g.setColor(Color.white);
+            g.drawString(String.valueOf(model.reducePlayerAce()), 300,500);
+            
             // Display game result only if game is over
             if (!model.isGameInProgress()) {
                 int dealerSum = model.reduceDealerAce();
                 int playerSum = model.reducePlayerAce();
+                g.setFont(new Font("Arial", Font.PLAIN, 24));
+                g.setColor(Color.white);
+                g.drawString(String.valueOf(model.reduceDealerAce()), 300,200);
                 String message = "";
                 if (playerSum > 21) {
                     message = "You Lose!";
