@@ -1,0 +1,34 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    // Add any additional dependencies here
+    // Example:
+    // implementation 'some.group:artifact:version'
+}
+
+mainClassName = 'Lobby' // Change 'Lobby' to your main class name
+
+sourceSets {
+    main {
+        java {
+            srcDirs 'src'
+        }
+        resources {
+            srcDirs 'cards' // Assuming your card images are in the 'cards' directory
+        }
+    }
+}
+
+task copyResources(type: Copy) {
+    from 'cards' // Assuming your card images are in the 'cards' directory
+    into 'build/resources/main/cards'
+}
+
+build.dependsOn(copyResources)
