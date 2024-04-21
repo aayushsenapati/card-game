@@ -103,7 +103,7 @@ public class BlackJackModel {
         else if(playerSum < 21 && dealerSum > playerSum) {
             notifyLoss();
         }
-        else if(playerSum < 21 && dealerSum < playerSum) {
+        else if(playerSum <= 21 && dealerSum < playerSum) {
             notifyWin();
         }
     
