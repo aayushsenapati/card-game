@@ -4,29 +4,31 @@ plugins {
 }
 
 repositories {
-    mavenCentral()
+    jcenter()
 }
 
 dependencies {
-    // Add your dependencies here, for example:
-    // implementation 'com.google.guava:guava:30.1-jre'
+    // Add any additional dependencies here
+    // Example:
+    // implementation 'some.group:artifact:version'
 }
 
-sourceCompatibility = '11'
-targetCompatibility = '11'
-
-application {
-    mainClassName = 'BlackJackGame'
-}
+mainClassName = 'Lobby' // Change 'Lobby' to your main class name
 
 sourceSets {
     main {
         java {
-            srcDirs = ['src']
+            srcDirs 'src'
+        }
+        resources {
+            srcDirs 'cards' // Assuming your card images are in the 'cards' directory
         }
     }
 }
 
-run {
-    standardInput = System.in
+task copyResources(type: Copy) {
+    from 'cards' // Assuming your card images are in the 'cards' directory
+    into 'build/resources/main/cards'
 }
+
+build.dependsOn(copyResources)

@@ -1,4 +1,4 @@
-
+/*
 import javax.swing.*;
 
 public class BlackJackGame {
@@ -10,9 +10,9 @@ public class BlackJackGame {
         // Set up the game window
         JFrame frame = new JFrame("Black Jack");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(view);
+        // frame.add(view);
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
-}
+} */
