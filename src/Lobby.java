@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+
+
 public class Lobby extends JFrame implements GameObserver {
 
     private int winCount = 0;
@@ -63,9 +65,10 @@ public class Lobby extends JFrame implements GameObserver {
 
     private void startBlackjack() {
         // Start Blackjack game
-        BlackJackModel model = new BlackJackModel();
-        BlackJackView view = new BlackJackView(model);
-        BlackJackController controller = new BlackJackController(model, view);
+        BlackJackFactory factory = new BlackJackFactory();
+        BlackJackModel model = factory.getModel();
+        BlackJackView view = factory.getView(model);
+        BlackJackController controller = factory.getController(view, model);
         model.addObserver(this);
 
         JFrame frame = new JFrame("BlackJack");
