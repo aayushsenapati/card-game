@@ -104,27 +104,25 @@ public class BlackJackModel {
 
     public void stay() {
         while (dealerSum < 17) {
+
+            // Add a card to the dealer's hand
             Card card = deck.remove(deck.size() - 1);
             dealerSum += card.getValue();
             dealerAceCount += card.isAce() ? 1 : 0;
             dealerHand.add(card);
-
-            if (dealerSum > 21) {
-                notifyWin();
-                gameInProgress = false;
-                break;
-            }
-            if(playerSum < 21 && dealerSum > playerSum) {
-                notifyLoss();
-                gameInProgress = false;
-                break;
-            }
-            else if(playerSum < 21 && dealerSum < playerSum) {
-                notifyWin();
-                gameInProgress = false;
-                break;
-            }
+        
         }
+        
+        if (dealerSum > 21) {
+            notifyWin();
+        }
+        else if(playerSum < 21 && dealerSum > playerSum) {
+            notifyLoss();
+        }
+        else if(playerSum < 21 && dealerSum < playerSum) {
+            notifyWin();
+        }
+    
         gameInProgress = false; // End the game after the dealer's turn
     }
 
