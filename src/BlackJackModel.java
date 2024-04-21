@@ -83,6 +83,9 @@ public class BlackJackModel {
             gameInProgress = false;
             notifyLoss();
         }
+        else if(playerSum == 21) {
+            stay();
+        }
     }
 
     public void stay() {
